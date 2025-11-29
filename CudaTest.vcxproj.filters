@@ -1,14 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
-    <CudaCompile Include="Cube_Batch.cu" />
-    <CudaCompile Include="Line3D_Batch.cu" />
-    <CudaCompile Include="Point3D_Batch.cu" />
+    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="kernels.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Point3D_Batch.cuh" />
-    <ClInclude Include="Line3D_Batch.cuh" />
-    <ClInclude Include="Cube_Batch.cuh" />
+    <ClInclude Include="Constant.hpp">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="RealsenseCamera.cuh">
+      <Filter>Camera</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{f49280d1-b526-4f5b-a01f-f716e19d438d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RealsenseCamera.cu">
+      <Filter>Camera</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
