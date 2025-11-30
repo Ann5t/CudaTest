@@ -3,15 +3,16 @@
 #include "Constant.hpp"
 #include <cuda_runtime.h>
 
-__constant__ float d_COLOR_INTR[4];    // 4¸ö²ÊÉ«ÄÚ²Î (fx, fy, cx, cy)
-__constant__ float d_DEPTH_INTR[4];    // 4¸öÉî¶ÈÄÚ²Î
-__constant__ float d_EXTR_ROT[9];      // 3x3Ğı×ª¾ØÕó
-__constant__ float d_EXTR_TRANS[3];    // 3¸öÆ½ÒÆÁ¿
-__constant__ float d_DEPTH_SCALE;      // Éî¶ÈËõ·ÅÒò×Ó£¨µ¥¸öfloat£©
-__constant__ float d_DEPTH_MIN;        // ×îĞ¡ÓĞĞ§Éî¶È£¨µ¥¸öfloat£©
-__constant__ float d_DEPTH_MAX;        // ×î´óÓĞĞ§Éî¶È£¨µ¥¸öfloat£©
+// ä»…å£°æ˜ - å®šä¹‰åœ¨ PointCloud.cpp ä¸­
+extern __constant__ float d_COLOR_INTR[4];    // 4ä¸ªé¢œè‰²å†…å‚ (fx, fy, cx, cy)
+extern __constant__ float d_DEPTH_INTR[4];    // 4ä¸ªæ·±åº¦å†…å‚
+extern __constant__ float d_EXTR_ROT[9];      // 3x3æ—‹è½¬çŸ©é˜µ
+extern __constant__ float d_EXTR_TRANS[3];    // 3ä¸ªå¹³ç§»é‡
+extern __constant__ float d_DEPTH_SCALE;      // æ·±åº¦ç¼©æ”¾å› å­ï¼ˆå•ä¸ªfloatï¼‰
+extern __constant__ float d_DEPTH_MIN;        // æœ€å°æœ‰æ•ˆæ·±åº¦ï¼ˆå•ä¸ªfloatï¼‰
+extern __constant__ float d_DEPTH_MAX;        // æœ€å¤§æœ‰æ•ˆæ·±åº¦ï¼ˆå•ä¸ªfloatï¼‰
 
-// µãÔÆ£¬Ã¿Ö¡¸´ÓÃ´óĞ¡Îª INPUT_PIXEL_COUNT µÄ»º³å
+// ï¿½ï¿½ï¿½Æ£ï¿½Ã¿Ö¡ï¿½ï¿½ï¿½Ã´ï¿½Ğ¡Îª INPUT_PIXEL_COUNT ï¿½Ä»ï¿½ï¿½ï¿½
 struct PointCloud {
     float x[INPUT_PIXEL_COUNT];
     float y[INPUT_PIXEL_COUNT];
