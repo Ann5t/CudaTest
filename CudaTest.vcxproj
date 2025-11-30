@@ -80,6 +80,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>cudart_static.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;realsense2.lib;opencv_world4120.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Annst\Documents\Intel RealSense SDK 2.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
@@ -89,15 +90,18 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="kernels.cu" />
-    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="main.cpp" />
+    <CudaCompile Include="PointCloud.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constant.hpp" />
-    <ClInclude Include="RealsenseCamera.cuh" />
+    <ClInclude Include="PointCloud.hpp" />
+    <ClInclude Include="RealsenseCamera.hpp" />
+    <ClInclude Include="Visualizer.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RealsenseCamera.cu" />
+    <ClCompile Include="RealsenseCamera.cpp" />
+    <ClCompile Include="Visualizer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

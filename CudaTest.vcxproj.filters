@@ -1,25 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CudaCompile Include="main.cu" />
-    <CudaCompile Include="kernels.cu" />
+    <CudaCompile Include="main.cpp" />
+    <CudaCompile Include="PointCloud.cpp">
+      <Filter>PointCloud</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constant.hpp">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="RealsenseCamera.cuh">
+    <ClInclude Include="RealsenseCamera.hpp">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCloud.hpp">
+      <Filter>PointCloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Visualizer.hpp">
+      <Filter>Visualizer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Camera">
       <UniqueIdentifier>{f49280d1-b526-4f5b-a01f-f716e19d438d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PointCloud">
+      <UniqueIdentifier>{3a425404-9883-4f14-a5ed-ad1b3f2d3e3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visualizer">
+      <UniqueIdentifier>{e5952ad3-6382-475b-bf0f-c4fbe8fe67f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RealsenseCamera.cu">
+    <ClCompile Include="RealsenseCamera.cpp">
       <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Visualizer.cpp">
+      <Filter>Visualizer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
