@@ -20,6 +20,7 @@
 #include <cuda_runtime.h>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <iomanip>
 #include <chrono>
 
 // CUDA错误检查宏

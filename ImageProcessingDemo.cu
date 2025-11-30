@@ -273,6 +273,7 @@ void CudaImageProcessor::process_edge_detection(
         d_blur_buffer_, d_edge_output, width_, height_
     );
     
+    // 注意：在生产环境中，可以移除此同步调用并在调用者端统一同步以提高性能
     CHECK_CUDA_IMG(cudaDeviceSynchronize());
 }
 
@@ -286,5 +287,6 @@ void CudaImageProcessor::process_depth_visualization(
         d_depth_input, d_rgb_output, width_, height_, min_depth, max_depth
     );
     
+    // 注意：在生产环境中，可以移除此同步调用并在调用者端统一同步以提高性能
     CHECK_CUDA_IMG(cudaDeviceSynchronize());
 }
