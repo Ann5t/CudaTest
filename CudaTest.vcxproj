@@ -90,18 +90,18 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="main.cpp" />
-    <CudaCompile Include="PointCloud.cpp" />
+    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="PointCloud.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constant.hpp" />
-    <ClInclude Include="PointCloud.hpp" />
+    <ClInclude Include="PointCloud.cuh" />
     <ClInclude Include="RealsenseCamera.hpp" />
-    <ClInclude Include="Visualizer.hpp" />
+    <ClInclude Include="Visualizer.cuh" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RealsenseCamera.cpp" />
-    <ClCompile Include="Visualizer.cpp" />
+    <ClCompile Include="Visualizer.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

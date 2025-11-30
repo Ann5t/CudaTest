@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CudaCompile Include="main.cpp" />
-    <CudaCompile Include="PointCloud.cpp">
+    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="PointCloud.cu">
       <Filter>PointCloud</Filter>
     </CudaCompile>
   </ItemGroup>
@@ -13,10 +13,10 @@
     <ClInclude Include="RealsenseCamera.hpp">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="PointCloud.hpp">
+    <ClInclude Include="PointCloud.cuh">
       <Filter>PointCloud</Filter>
     </ClInclude>
-    <ClInclude Include="Visualizer.hpp">
+    <ClInclude Include="Visualizer.cuh">
       <Filter>Visualizer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClCompile Include="RealsenseCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Visualizer.cpp">
+    <ClCompile Include="Visualizer.cu">
       <Filter>Visualizer</Filter>
     </ClCompile>
   </ItemGroup>

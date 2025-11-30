@@ -1,16 +1,7 @@
-#include "PointCloud.hpp"
+#include "PointCloud.cuh"
 #include <cuda_runtime.h>
 #include <cmath>
 #include <stdexcept>
-
-// 在这里定义 __constant__ 内存（所有翻译单元的单一定义）
-__constant__ float d_COLOR_INTR[4];    // 4个颜色内参 (fx, fy, cx, cy)
-__constant__ float d_DEPTH_INTR[4];    // 4个深度内参
-__constant__ float d_EXTR_ROT[9];      // 3x3旋转矩阵
-__constant__ float d_EXTR_TRANS[3];    // 3个平移量
-__constant__ float d_DEPTH_SCALE;      // 深度缩放因子（单个float）
-__constant__ float d_DEPTH_MIN;        // 最小有效深度（单个float）
-__constant__ float d_DEPTH_MAX;        // 最大有效深度（单个float）
 
 #define CHECK_CUDA(expr) \
     do { \
