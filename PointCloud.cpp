@@ -3,11 +3,20 @@
 #include <cmath>
 #include <stdexcept>
 
+// åœ¨è¿™é‡Œå®šä¹‰ __constant__ å†…å­˜ï¼ˆæ‰€æœ‰ç¿»è¯‘å•å…ƒçš„å•ä¸€å®šä¹‰ï¼‰
+__constant__ float d_COLOR_INTR[4];    // 4ä¸ªé¢œè‰²å†…å‚ (fx, fy, cx, cy)
+__constant__ float d_DEPTH_INTR[4];    // 4ä¸ªæ·±åº¦å†…å‚
+__constant__ float d_EXTR_ROT[9];      // 3x3æ—‹è½¬çŸ©é˜µ
+__constant__ float d_EXTR_TRANS[3];    // 3ä¸ªå¹³ç§»é‡
+__constant__ float d_DEPTH_SCALE;      // æ·±åº¦ç¼©æ”¾å› å­ï¼ˆå•ä¸ªfloatï¼‰
+__constant__ float d_DEPTH_MIN;        // æœ€å°æœ‰æ•ˆæ·±åº¦ï¼ˆå•ä¸ªfloatï¼‰
+__constant__ float d_DEPTH_MAX;        // æœ€å¤§æœ‰æ•ˆæ·±åº¦ï¼ˆå•ä¸ªfloatï¼‰
+
 #define CHECK_CUDA(expr) \
     do { \
         cudaError_t err = (expr); \
         if (err != cudaSuccess) { \
-            throw std::runtime_error(std::string(cudaGetErrorString(err)) + " (²Ù×÷: " #expr ")"); \
+            throw std::runtime_error(std::string(cudaGetErrorString(err)) + " (ï¿½ï¿½ï¿½ï¿½: " #expr ")"); \
         } \
     } while (0)
 
@@ -16,38 +25,38 @@ __global__ void generate_pointcloud(
 	const uint16_t* depth,
 	PointCloud* pcd
 ) {
-	// ÏÈÕÒÔÚÍ¼Ïñ·¶Î§ÄÚµÄÏñËØµã£¬¼ì²éÓÐÐ§ÐÔ£¬µÚvÐÐµÚuÁÐ£¬ÒÔ¼°ÔÚgpuÀïµÄÏßÐÔË÷Òýidx
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½Î§ï¿½Úµï¿½ï¿½ï¿½ï¿½Øµã£¬ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ô£ï¿½ï¿½ï¿½vï¿½Ðµï¿½uï¿½Ð£ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½gpuï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½idx
 	int u = blockIdx.x * blockDim.x + threadIdx.x;
 	int v = blockIdx.y * blockDim.y + threadIdx.y;
 	
 	if (u >= INPUT_WIDTH || v >= INPUT_HEIGHT) return;
 	int idx = v * INPUT_WIDTH + u;
 
-	// Ä¬ÈÏÖÃÎªÎÞÐ§£¨Èç¹ûºóÃæÅÐ¶¨ÎªÓÐÐ§»á¸²¸Ç£©
+	// Ä¬ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½Îªï¿½ï¿½Ð§ï¿½á¸²ï¿½Ç£ï¿½
 	pcd->valid[idx] = 0;
 
-	// »ñÈ¡Éî¶ÈÖµ£¬¼ì²éÓÐÐ§ÐÔ
+	// ï¿½ï¿½È¡ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
 	float z = depth[idx] * d_DEPTH_SCALE;
 	//printf("Valid depth at (%d, %d, %d): %.3f mm, %.3f m, %f\n", u, v, idx, depth[idx], z, d_DEPTH_SCALE);
 	if (z == 0 || z < d_DEPTH_MIN || z > d_DEPTH_MAX) return;
 	
-	// ½«Éî¶ÈÊý¾ÝÓ³Éäµ½Éî¶ÈÏà»ú×ø±êÏµÏÂ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½äµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½
 	float x_d = (u - d_DEPTH_INTR[2]) * z / d_DEPTH_INTR[0];
 	float y_d = (v - d_DEPTH_INTR[3]) * z / d_DEPTH_INTR[1];
 	float z_d = z;
 
-	// ½«Éî¶ÈÊý¾Ý´ÓÉî¶ÈÏà»ú×ø±êÏµ×ª»»µ½²ÊÉ«Ïà»ú×ø±êÏµ£¬ÉáÆúÔÚÏà»úºó·½µÄµã
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó·½µÄµï¿½
 	float px = d_EXTR_ROT[0] * x_d + d_EXTR_ROT[3] * y_d + d_EXTR_ROT[6] * z_d + d_EXTR_TRANS[0];
 	float py = d_EXTR_ROT[1] * x_d + d_EXTR_ROT[4] * y_d + d_EXTR_ROT[7] * z_d + d_EXTR_TRANS[1];
 	float pz = d_EXTR_ROT[2] * x_d + d_EXTR_ROT[5] * y_d + d_EXTR_ROT[8] * z_d + d_EXTR_TRANS[2];
 	if (pz <= 0) return;
 
-	// ½«µãÍ¶Ó°µ½²ÊÉ«Í¼ÏñÆ½Ãæ£¬»ñÈ¡¶ÔÓ¦µÄ²ÊÉ«Í¼ÏñÏñËØ×ø±ê£¬ÉáÆúÍ¶Ó°µ½Í¼ÏñÍâµÄµã
+	// ï¿½ï¿½ï¿½ï¿½Í¶Ó°ï¿½ï¿½ï¿½ï¿½É«Í¼ï¿½ï¿½Æ½ï¿½æ£¬ï¿½ï¿½È¡ï¿½ï¿½Ó¦ï¿½Ä²ï¿½É«Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½Í¶Ó°ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½Äµï¿½
 	int u_c = __float2int_rn(d_COLOR_INTR[0] * px / pz + d_COLOR_INTR[2]);
 	int v_c = __float2int_rn(d_COLOR_INTR[1] * py / pz + d_COLOR_INTR[3]);
 	if (u_c < 0 || u_c >= INPUT_WIDTH || v_c < 0 || v_c >= INPUT_HEIGHT) return;
 
-	// ÉíÏÂµÄ¾ÍÊÇÓÐÐ§µã£¬Ð´ÈëµãÔÆÊý¾Ý
+	// ï¿½ï¿½ï¿½ÂµÄ¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ã£¬Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	int cidx = v_c * INPUT_WIDTH + u_c;
 	pcd->x[idx] = px;
 	pcd->y[idx] = py;
