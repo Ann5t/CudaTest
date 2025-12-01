@@ -1,4 +1,4 @@
-#include "ImageProcessingDemo.cuh"
+﻿#include "ImageProcessingDemo.cuh"
 #include <cuda_runtime.h>
 #include <stdexcept>
 #include <cmath>

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Constant.hpp"
 #include <cuda_runtime.h>

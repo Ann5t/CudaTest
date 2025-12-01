@@ -1,4 +1,4 @@
-#include "Constant.hpp"
+﻿#include "Constant.hpp"
 #include "Visualizer.cuh"
 #include <opencv2/opencv.hpp>
 #include <cuda_runtime.h>
