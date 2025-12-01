@@ -1,4 +1,4 @@
-#include "PointCloud.cuh"
+﻿#include "PointCloud.cuh"
 #include <cuda_runtime.h>
 #include <cmath>
 #include <stdexcept>
